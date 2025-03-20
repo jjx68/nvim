@@ -23,3 +23,20 @@ vim.api.nvim_create_autocmd("VimEnter", {
     end,
     desc = "Automatically set cwd to Oil's current directory and restore session on VimEnter",
 })
+
+vim.api.nvim_create_autocmd("TermOpen", {
+    pattern = "*",
+    callback = function()
+        vim.wo.number = false
+        vim.wo.relativenumber = false
+        vim.cmd("startinsert")
+    end
+})
+
+vim.api.nvim_create_autocmd("Filetype", {
+    pattern = "norg",
+    callback = function()
+        vim.keymap.set("i", "<C-CR>", "<Plug>(neorg.itero.next-iteration)", { buffer = true })
+    end,
+})
+

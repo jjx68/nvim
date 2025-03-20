@@ -17,7 +17,7 @@ end, { desc = "Open Oil Float with Preview" })
 -- Telescope
 local builtin = require("telescope.builtin")
 vim.keymap.set("n", "<C-p>", builtin.find_files, { desc = "Find Files" })
-vim.keymap.set("n", "<C-i>", builtin.live_grep, { desc = "Live Grep" })
+vim.keymap.set("n", "<C-k>", builtin.live_grep, { desc = "Live Grep" })
 vim.keymap.set("n", "<leader>fb", builtin.buffers, { desc = "Buffers" })
 vim.keymap.set("n", "<leader>fm", builtin.marks, { desc = "Marks" })
 vim.keymap.set("n", "<leader>fr", builtin.registers, { desc = "Registers" })
@@ -25,26 +25,17 @@ vim.keymap.set("n", "<leader>ft", builtin.treesitter, { desc = "Treesitter Symbo
 vim.keymap.set("n", "<leader>fc", builtin.commands, { desc = "Commands" })
 
 -- Aerial
-vim.keymap.set("n", "<leader>fa", "<cmd>Telescope aerial<CR>", { desc = "Search Aerial Symbols" })
+vim.keymap.set("n", "<C-s>", "<cmd>Telescope aerial<CR>", { desc = "Search Aerial Symbols" })
 
 -- Harpoon
-local harpoon_mark = require("harpoon.mark")
-local harpoon_ui = require("harpoon.ui")
-local harpoon_tmux = require("harpoon.tmux")
-local harpoon_cmd_ui = require("harpoon.cmd-ui")
-vim.keymap.set("n", "<leader>a", harpoon_mark.add_file, { desc = "Add File to Harpoon" })
-vim.keymap.set("n", "<leader>h", harpoon_ui.toggle_quick_menu, { desc = "Harpoon Menu" })
-vim.keymap.set("n", "<leader>1", function() harpoon_ui.nav_file(1) end, { desc = "Harpoon File 1" })
-vim.keymap.set("n", "<leader>2", function() harpoon_ui.nav_file(2) end, { desc = "Harpoon File 2" })
-vim.keymap.set("n", "<leader>3", function() harpoon_ui.nav_file(3) end, { desc = "Harpoon File 3" })
-vim.keymap.set("n", "<leader>4", function() harpoon_ui.nav_file(4) end, { desc = "Harpoon File 4" })
-vim.keymap.set("n", "<leader>5", function() harpoon_ui.nav_file(5) end, { desc = "Harpoon File 5" })
-vim.keymap.set("n", "<leader>m", function() harpoon_cmd_ui.toggle_quick_menu() end, { desc = "Harpoon Command Menu" })
-vim.keymap.set("n", ";1", function() harpoon_tmux.sendCommand(1, 1) end, { desc = "Harpoon Command 1" })
-vim.keymap.set("n", ";2", function() harpoon_tmux.sendCommand(1, 2) end, { desc = "Harpoon Command 2" })
-vim.keymap.set("n", ";3", function() harpoon_tmux.sendCommand(1, 3) end, { desc = "Harpoon Command 3" })
-vim.keymap.set("n", ";4", function() harpoon_tmux.sendCommand(1, 4) end, { desc = "Harpoon Command 4" })
-vim.keymap.set("n", ";5", function() harpoon_tmux.sendCommand(1, 5) end, { desc = "Harpoon Command 5" })
+local harpoon = require("harpoon")
+vim.keymap.set("n", "<leader>a", function() harpoon:list():add() end)
+vim.keymap.set("n", "<leader>h", function() harpoon.ui:toggle_quick_menu(harpoon:list()) end)
+vim.keymap.set("n", "<leader>1", function() harpoon:list():select(1) end)
+vim.keymap.set("n", "<leader>2", function() harpoon:list():select(2) end)
+vim.keymap.set("n", "<leader>3", function() harpoon:list():select(3) end)
+vim.keymap.set("n", "<leader>4", function() harpoon:list():select(4) end)
+vim.keymap.set("n", "<leader>5", function() harpoon:list():select(5) end)
 
 -- LSP
 vim.keymap.set("n", "K", vim.lsp.buf.hover, { desc = "Hover" })
@@ -53,10 +44,13 @@ vim.keymap.set("n", "gd", vim.lsp.buf.definition, { desc = "Go to Definition" })
 vim.keymap.set({ "n", "v" }, "<leader>c", vim.lsp.buf.code_action, { desc = "Code Actions" })
 
 -- Sessions
-vim.keymap.set("n", "<leader>qs", function() require("persistence").load() end, { desc = "Load session for the current directory" })
+vim.keymap.set("n", "<leader>qs", function() require("persistence").load() end,
+    { desc = "Load session for the current directory" })
 vim.keymap.set("n", "<leader>qS", function() require("persistence").select() end, { desc = "Select a session to load" })
-vim.keymap.set("n", "<leader>ql", function() require("persistence").load({ last = true }) end, { desc = "Load the last session" })
-vim.keymap.set("n", "<leader>qd", function() require("persistence").stop() end, { desc = "Stop session persistence (no auto-save on exit)" })
+vim.keymap.set("n", "<leader>ql", function() require("persistence").load({ last = true }) end,
+    { desc = "Load the last session" })
+vim.keymap.set("n", "<leader>qd", function() require("persistence").stop() end,
+    { desc = "Stop session persistence (no auto-save on exit)" })
 
 -- Neotest Keybindings
 vim.keymap.set("n", "<leader>t", ":TestNearest<CR>", { silent = true, desc = "Run Test Nearest" })
@@ -68,5 +62,15 @@ vim.keymap.set("n", "<leader>g", ":TestVisit<CR>", { silent = true, desc = "Visi
 -- LSP
 vim.keymap.set('n', '<leader>r', vim.lsp.buf.format, {})
 
+-- Neorg
+vim.keymap.set("n", "<leader>nn", "<cmd>Neorg workspace notes<CR>", { desc = "Open Neorg Notes Workspace" })
+
+-- Marks
+vim.keymap.set("n", "<leader>m", ":MarksListAll<CR>", { silent = true, desc = "Show all marks in open buffers" })
+
 -- Vim
-vim.keymap.set('n', '<leader>n', ':set relativenumber!<CR>', { desc = "Toggle Relative Numbers" })
+vim.keymap.set('n', '<leader>nr', ':set relativenumber!<CR>', { desc = "Toggle Relative Numbers" })
+vim.keymap.set('i', '<C-h>', '<Left>', { noremap = true, silent = true })
+vim.keymap.set('i', '<C-l>', '<Right>', { noremap = true, silent = true })
+vim.keymap.set('i', '<C-j>', '<Down>', { noremap = true, silent = true })
+vim.keymap.set('i', '<C-k>', '<Up>', { noremap = true, silent = true })

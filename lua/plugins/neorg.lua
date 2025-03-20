@@ -11,6 +11,8 @@ return {
 					config = {
 						workspaces = {
 							notes = "~/notes",
+							work = "~/notes/work",
+							self_study = "~/notes/education/self_study",
 						},
 						default_workspace = "notes",
 					},
